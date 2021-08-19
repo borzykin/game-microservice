@@ -1,5 +1,6 @@
 package dev.bozykin.usermicroservice.service;
 
+import dev.bozykin.usermicroservice.domain.EloCalculator;
 import dev.bozykin.usermicroservice.entity.GameEntity;
 import dev.bozykin.usermicroservice.exception.NoSuchGameException;
 import dev.bozykin.usermicroservice.model.AddGameRequest;
@@ -34,11 +35,16 @@ public class GameService {
         if (game.getWinnerId() == null || game.getLooserId() == null || game.getWinnerId().equals(game.getLooserId())) {
             throw new InvalidAttributesException("Invalid input");
         } else {
+            double winnerScore = 1200; // todo get score from user service via api call
+            double looserScore = 1000; // todo get score from user service via api call
+
+            EloCalculator calculator = new EloCalculator(winnerScore, looserScore);
+
             var gameEntity = new GameEntity()
                     .setWinner(game.getWinnerId())
                     .setLooser(game.getLooserId())
-                    .setScoreGained(10.1)
-                    .setScoreLost(9.9)
+                    .setScoreGained(calculator.getWinnerScoreGained())
+                    .setScoreLost(calculator.getLooserScoreLost())
                     .setCreatedOn(OffsetDateTime.now(ZoneOffset.UTC));
             return gameRepository.save(gameEntity);
         }
