@@ -16,6 +16,7 @@ public class EloCalculator {
     public EloCalculator(double winnerScore, double looserScore) {
         this.winnerScore = winnerScore;
         this.looserScore = looserScore;
+        // todo the formula implementation is kinda garbage, is it better is in another timeline
         this.winnerScoreGained = (winnerScore + 20 * (1 - chance(winnerScore, looserScore))) - winnerScore;
         this.looserScoreLost = looserScore - (looserScore + 20 * (0 - chance(looserScore, winnerScore)));
     }
