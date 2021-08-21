@@ -1,5 +1,6 @@
 package dev.bozykin.usermicroservice.service;
 
+import dev.bozykin.usermicroservice.client.UserClient;
 import dev.bozykin.usermicroservice.domain.EloCalculator;
 import dev.bozykin.usermicroservice.entity.GameEntity;
 import dev.bozykin.usermicroservice.exception.NoSuchGameException;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GameService {
     private final GameRepository gameRepository;
+    private final UserClient userClient;
 
     public List<GameEntity> getAllGames() {
         return (List<GameEntity>) gameRepository.findAll();
@@ -35,8 +37,8 @@ public class GameService {
         if (game.getWinnerId() == null || game.getLooserId() == null || game.getWinnerId().equals(game.getLooserId())) {
             throw new InvalidAttributesException("Invalid input");
         } else {
-            double winnerScore = 1200; // todo get score from user service via api call
-            double looserScore = 1000; // todo get score from user service via api call
+            double winnerScore = userClient.getUser(game.getWinnerId()).getScore();
+            double looserScore = userClient.getUser(game.getLooserId()).getScore();
 
             EloCalculator calculator = new EloCalculator(winnerScore, looserScore);
 
@@ -46,6 +48,10 @@ public class GameService {
                     .setScoreGained(calculator.getWinnerScoreGained())
                     .setScoreLost(calculator.getLooserScoreLost())
                     .setCreatedOn(OffsetDateTime.now(ZoneOffset.UTC));
+
+            userClient.updateUser(game.getWinnerId(), winnerScore + calculator.getWinnerScoreGained());
+            userClient.updateUser(game.getLooserId(), looserScore - calculator.getLooserScoreLost());
+
             return gameRepository.save(gameEntity);
         }
     }
