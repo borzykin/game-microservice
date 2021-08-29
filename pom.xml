@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>dev.bozykin</groupId>
 	<artifactId>game-microservice</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2.1</version>
 	<name>game-microservice</name>
 	<description>Game microservice</description>
 	<properties>
@@ -54,6 +54,21 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-aws-messaging</artifactId>
+			<version>2.2.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-aws</artifactId>
+			<version>2.2.6.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.32</version>
 		</dependency>
 	</dependencies>
 

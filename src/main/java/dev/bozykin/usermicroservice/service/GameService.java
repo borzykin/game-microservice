@@ -20,6 +20,7 @@ import java.util.UUID;
 public class GameService {
     private final GameRepository gameRepository;
     private final UserClient userClient;
+    private final SqsSender sqsSender;
 
     public List<GameEntity> getAllGames() {
         return (List<GameEntity>) gameRepository.findAll();
@@ -49,9 +50,7 @@ public class GameService {
                     .setScoreLost(calculator.getLooserScoreLost())
                     .setCreatedOn(OffsetDateTime.now(ZoneOffset.UTC));
 
-            userClient.updateUser(game.getWinnerId(), winnerScore + calculator.getWinnerScoreGained());
-            userClient.updateUser(game.getLooserId(), looserScore - calculator.getLooserScoreLost());
-
+            sqsSender.send(gameEntity);
             return gameRepository.save(gameEntity);
         }
     }

@@ -1,8 +1,10 @@
 package dev.bozykin.usermicroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -20,6 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = "games")
+@ToString
 public class GameEntity {
 
     @Id
@@ -32,6 +35,7 @@ public class GameEntity {
     @Column(name = "\"scoreLost\"")
     private double scoreLost;
     @Column(name = "\"createdOn\"")
+    @JsonIgnore
     private OffsetDateTime createdOn;
 
 }
