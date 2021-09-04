@@ -1,7 +1,9 @@
 package dev.bozykin.usermicroservice;
 
+import com.amazonaws.services.sns.AmazonSNS;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -19,4 +21,8 @@ public class GameMicroserviceApplication {
 		return WebClient.create(String.format("http://%s:%s/api/v1/users", host, port));
 	}
 
+	@Bean
+	public NotificationMessagingTemplate notificationMessagingTemplate(final AmazonSNS amazonSNS) {
+		return new NotificationMessagingTemplate(amazonSNS);
+	}
 }

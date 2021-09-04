@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@Deprecated
 public class SqsSender {
     private final QueueMessagingTemplate queueMessagingTemplate;
 
